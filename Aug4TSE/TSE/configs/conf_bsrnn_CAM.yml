@@ -1,0 +1,51 @@
+# Network config
+model:
+  spk_emb_dim: 192
+  sr: 16000
+  win: 512
+  stride: 128 # 8ms
+  feature_dim: 128
+  num_repeat: 6
+  spk_fuse_type: 'multiply'
+  use_spk_transform: False
+
+# Training config
+training:
+  model_name: 'bsrnn'
+  load_param_index: 49
+  eval_interval: 1
+  exp_dir: "exp/bsrnn_sisdr_librimixClean_cam192_1s_bsz8_distData2"
+  loss: 'sisdr'
+  num_avg: 5
+  accum_grad: 1
+
+# Optim config
+optim:
+  optimizer: adam
+  lr: 0.001
+  final_lr: 0.00002
+  weight_decay: 0.0001
+  lr_descend_factor: 0.98
+  patience: 0
+  stop_patience: 5
+
+# Data config
+data:
+  data_root: "/CDShare3/LibriMix/Libri2Mix/wav16k/min"
+  spk_emb_dir: ["data/enroll_speech/embeddings/cam192_1s"]
+  audio_length: 4
+  sample_rate: 16000
+  batch_size: 3
+  num_workers: 4
+  mode: 'mix_clean'
+  train_subset: 'train-100'
+  valid_subset: 'dev'
+
+# Distribute Training
+distribute:
+  distributed: False
+  gpu_ids: [2,3]
+
+# gradient clipping
+grad_clipping:
+  clip_grad: 5.0

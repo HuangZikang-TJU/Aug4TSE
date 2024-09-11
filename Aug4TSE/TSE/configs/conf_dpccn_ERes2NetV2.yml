@@ -1,0 +1,49 @@
+model:
+  spk_emb_dim: 192
+  win: 512
+  stride: 128
+  feature_dim: 257
+  tcn_blocks: 10
+  tcn_layers: 2
+  causal: False
+  spk_fuse_type: 'multiply'
+  use_spk_transform: False
+
+training:
+  model_name: 'dpccn'
+  load_param_index: -1
+  eval_interval: 1
+  exp_dir: "exp/dpccn_TEST"
+  loss: 'sisdr'
+  num_avg: 5
+  accum_grad: 1
+
+optim:
+  optimizer: adam
+  lr: 0.001
+  final_lr: 0.00002
+  weight_decay: 0.0001
+  lr_descend_factor: 0.98
+  patience: 0
+  stop_patience: 5
+  max_epoch: 150
+# Data config
+data:
+  data_root: "/Work21/2024/huangzikang/new_audios/ICASSP2025/Libri2Mix/wav16k/min"
+  spk_emb_dir: ["/Work21/2024/huangzikang/bsrnn_ext_1/data/enroll_speech/embeddings/ERes2NetV2"]
+  audio_length: 4
+  sample_rate: 16000
+  batch_size: 5
+  num_workers: 4
+  mode: 'mix_clean'
+  train_subset: 'train-100'
+  valid_subset: 'dev'
+
+# Distribute Training
+distribute:
+  distributed: False
+  gpu_ids: [0]
+
+# gradient clipping
+grad_clipping:
+  clip_grad: 5.0
