@@ -13,7 +13,7 @@ training:
   model_name: 'dpccn'
   load_param_index: -1
   eval_interval: 1
-  exp_dir: "exp/dpccn_TEST"
+  exp_dir: "exp/dpccn_Test" #the dirname, and the ckpt will be saved in ./Aug4TSE/TSE/exp/dpccn_Test
   loss: 'sisdr'
   num_avg: 5
   accum_grad: 1
@@ -29,8 +29,8 @@ optim:
   max_epoch: 150
 # Data config
 data:
-  data_root: "/Work21/2024/huangzikang/new_audios/ICASSP2025/Libri2Mix/wav16k/min"
-  spk_emb_dir: ["/Work21/2024/huangzikang/bsrnn_ext_1/data/enroll_speech/embeddings/ERes2NetV2"]
+  data_root: "/CDShare3/LibriMix/Libri2Mix/wav16k/min"
+  spk_emb_dir: ["/Work21/2024/huangzikang/Github/Aug4TSE/TSE/data/enroll_speech/embeddings/LibriSpeech_CAM"]
   audio_length: 4
   sample_rate: 16000
   batch_size: 5

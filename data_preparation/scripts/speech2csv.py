@@ -5,7 +5,7 @@ import whisper
 import tqdm
 import numpy as np
 
-np.random.seed(523)
+np.random.seed(20230523)
 
 
 def norm(text: str):

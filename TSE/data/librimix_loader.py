@@ -82,7 +82,7 @@ class Libri2Mix(Dataset):
             s2_spk_emb = np.load(s2_emb_file)
         s2_spk_emb = torch.from_numpy(s2_spk_emb)
 
-        spk_emb = torch.cat([s1_spk_emb, s2_spk_emb], dim=0)
+        spk_emb = torch.cat([s1_spk_emb.unsqueeze(0), s2_spk_emb.unsqueeze(0)], dim=0)
         # spk_emb: 2 x spk_emb_dim
         return spk_emb
 
