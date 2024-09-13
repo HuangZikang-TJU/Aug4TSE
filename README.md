@@ -10,12 +10,12 @@ Follow the steps in ./TSE to create:
 
 # Augmenting based on the given short enrollment speeches
 Follow the steps in ./data_preparation to create:
-- augmented_speech.wav augmented speeches based on short enrollment speeches
-- augmented_speech.npy speaker embedding of augmented speeches
+- {augmented_speech}.wav augmented speeches based on short enrollment speeches
+- {augmented_speech}.npy speaker embedding of augmented speeches
 
 # Evaluate the TSE models using enrollment speeches
 Follow the steps in ./data_preparation to create:
-- the speaker embeddings of enrollment speeches that you want to use to evaluate TSE models
+- {test}.npy the speaker embeddings of enrollment speeches that you want to use to evaluate TSE models
 
 Follow the steps in ./TSE to create:
-- the evaluation results
+- evalutation.log the evaluation results
