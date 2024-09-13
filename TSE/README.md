@@ -9,7 +9,21 @@ Prior to executing this phase, we assume that you have locaaly stored or can acc
 cd TSE
 bash get_spkemb4training.sh
 ```
-
+- At the end of this stage, the directory structure of 'data' should look like this:
+```
+Aug4TSE/TSE/data/enroll_speech/embeddings/LibriSpeech_CAM
+train-clean-100:
+ - 19-198-0000.npy
+ - 19-198-0001.npy
+ - 19-198-0000.npy
+ - ...
+dev-clean:
+ - 84-121123-0024.npy
+ - 174-50561-0012.npy
+ - 251-136532-0014.npy
+ - ...
+```
+- Because the version of 3D-Speaker ToolKit maybe change, we recommend that you check whether the .npy files in /Aug4TSE/TSE/data/enrollmen_speech has a (C,) shape rather than (1, C).
 ### Stage 2: Train TSE model with Specific Config
 - You need to change the variables in train.sh and choose a specific config. If you first run this code, you can use the default config.
 - Change the variables in config such as "data_root" and "spk_emb_dir". 

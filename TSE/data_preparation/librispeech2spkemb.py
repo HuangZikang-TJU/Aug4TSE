@@ -1,7 +1,8 @@
 import argparse
 import os
 from shutil import copyfile
-
+import numpy as np
+np.random.seed(20030523)
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=str)
@@ -22,10 +23,20 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(root, "TSE", "temp_files"), exist_ok=True)
     with open(temp_txt, "w") as w:
         for spk in os.listdir(wav_root):
-            for chapter in os.listdir(os.path.join(wav_root, spk)):
-                for file in os.listdir(os.path.join(wav_root, spk, chapter)):
-                    if not file.endswith(".txt"):
-                        w.write(os.path.join(wav_root, spk, chapter, file) + "\n")
+            # We set-up that for training process, there is a multiple of enrollment speeches for one speaker
+            # but for validation and test process, there is only an enrollment speech for one speaker
+            if "train" in split:
+                for chapter in os.listdir(os.path.join(wav_root, spk)):
+                    for file in os.listdir(os.path.join(wav_root, spk, chapter)):
+                        if not file.endswith(".txt"):
+                            w.write(os.path.join(wav_root, spk, chapter, file) + "\n")
+            else:
+                wav_list = []
+                for chapter in os.listdir(os.path.join(wav_root, spk)):
+                    for file in os.listdir(os.path.join(wav_root, spk, chapter)):
+                        if not file.endswith(".txt"):
+                            wav_list.append(os.path.join(wav_root, spk, chapter, file))
+                w.write(np.random.choice(wav_list, 1)[0] + "\n")
     os.system(
         f"{python_path} {root}/data_preparation/3D-Speaker/speakerlab/bin/infer_sv.py --model_id iic/speech_campplus_sv_zh-cn_16k-common --wavs {temp_txt}"
     )
@@ -70,4 +81,5 @@ if __name__ == "__main__":
         )
 
     if remove_intermediates == True:
+        os.system(f"rm -r {root}/TSE/temp_files")
         os.system(f"rm -r {root}/TSE/pretrained")

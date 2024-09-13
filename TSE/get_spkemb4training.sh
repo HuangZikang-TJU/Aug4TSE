@@ -1,7 +1,7 @@
 PYTHON=/Work21/2024/huangzikang/miniconda3/envs/new_tts/bin/python # python.exe path 
 remove_intermediates="True" # False or True # the whole process will generate many intermediates. If you first conduct this experiment, we recommend "False"
 
-root=/Work21/2024/huangzikang/Github/Aug4TSE #./Aug4TSE
+root=/Work21/2024/huangzikang/Github/Aug4TSE #/path/to/Aug4TSE
 LibriSpeech_root=/CDShare3/LibriSpeech #./LibriSpeech
 
 GPU=0 #if the process need a GPU, your choosen GPU will be used.

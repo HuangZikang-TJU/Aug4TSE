@@ -10,5 +10,5 @@ PYTHONPATH=${root}/TSE/ \
 CUDA_VISIBLE_DEVICES=${GPU} \
 ${PYTHON} \
     ${root}/TSE/train.py \
---cfg-path ${root}/TSE/configs/conf_dpccn_CAM.yml \
+    --cfg-path ${root}/TSE/configs/conf_dpccn_CAM.yml \
 2>&1 | tee ${OUTHOME}/train.out
