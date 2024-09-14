@@ -122,10 +122,11 @@ def choose_synthesis(root: str, split: str, sample_times: int, python_path: str,
                 )
 
     os.system(f"rm -r {root}/pretrained/speech_campplus_sv_zh-cn_16k-common/embeddings")
-    for i in range(sample_times):
-        os.remove(os.path.join(ttswav_root, f"sample_{str(i)}_eval.txt"))
     if remove_intermediates == True:
         os.remove(eval_txt)
+        for i in range(sample_times):
+            os.remove(os.path.join(ttswav_root, f"sample_{str(i)}_eval.txt"))
+        os.system(f"rm -r {root}/pretrained")
         for i in range(sample_times):
             os.system(f"rm -r {root}/temp_files/TTS/{split}/sample_{str(i)}")
 
@@ -141,7 +142,7 @@ def concat(root: str, split: str, remove_intermediates: bool):
             TTS_wav, _ = librosa.load(os.path.join(TTS_path,f"{file.split('.')[0]}_TTS.wav"), sr=16000)
             sf.write(os.path.join(concat_tar_path,spk,file), np.concatenate([src_wav, TTS_wav],axis=0), 16000)
     if remove_intermediates:
-        os.system(f"rm -r {root}/temp_files/TTS")
+        os.system(f"rm -r {root}/temp_files")
             
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -28,10 +28,13 @@ if __name__ == "__main__":
     )
 
     src_emb_root = f"{root}/pretrained/speech_campplus_sv_zh-cn_16k-common/embeddings"
-    tar_emb_root = f"{root}/data/available_embedding/{split}"
+    tar_emb_root = f"{root}/data/available_embedding/{split}/test-clean"
     os.makedirs(tar_emb_root, exist_ok=True)
     for file in os.listdir(src_emb_root):
         copyfile(os.path.join(src_emb_root, file), os.path.join(tar_emb_root, file))
 
     os.system(f"rm -r {root}/pretrained/speech_campplus_sv_zh-cn_16k-common/embeddings")
     os.remove(temp_txt)
+    if remove_intermediates:
+        os.system(f"rm -r {root}/pretrained")
+        os.system(f"rm -r {root}/temp_files")

@@ -1,21 +1,22 @@
 PYTHON=/Work21/2024/huangzikang/miniconda3/envs/new_tts/bin/python # python.exe path 
-remove_intermediates="True" # False or True # the whole process will generate many intermediates. If you first conduct this experiment, we recommend "False"
+remove_intermediates="False" # False or True # the whole process will generate many intermediates. If you first conduct this experiment, we recommend "False"
 
-root=/Work21/2024/huangzikang/Github/Aug4TSE/data_preparation #./data_preparation
-split=0.5s #short enrollment speech.  ./root/data/available_speech/split
+root=/Work21/2024/huangzikang/Github/Aug4TSE/data_preparation #/path/to/data_preparation
+split=0.5s #short enrollment speech.  ./data_preparation/data/available_speech/split
 
 GPU=0 #if the process need a GPU, your choosen GPU will be used.
 
 #### for stage 3, the sample_times refers the times that TTS model generate for one short enrollment speech
 #### if you first conduct this experiment, we recommend a low number
-sample_times=7
+sample_times=2
 
-stage=1
+stage=4
 stop_stage=4
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     echo "convert short enrollment speech into speaker embeddings"
     PYTHONPATH=${root} \
+    CUDA_VISIBLE_DEVICES=${GPU} \
     ${PYTHON} ${root}/scripts/speech2spkemb.py \
         --root ${root} \
         --split ${split} \

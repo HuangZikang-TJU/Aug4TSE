@@ -18,4 +18,4 @@ Follow the steps in ./data_preparation to create:
 - {test}.npy the speaker embeddings of enrollment speeches that you want to use to evaluate TSE models
 
 Follow the steps in ./TSE to create:
-- evalutation.log the evaluation results
+- evaluation.log the evaluation results
