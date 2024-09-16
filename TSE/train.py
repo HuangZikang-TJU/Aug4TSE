@@ -38,9 +38,9 @@ class CriterionSystem(nn.Module):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--cfg-path", type=str)
+    parser.add_argument("--cfgpath", type=str, required=True)
     args = parser.parse_args()
-    with open(args.cfg_path) as f:
+    with open(args.cfgpath) as f:
         cfg = yaml.safe_load(f)
     print(cfg)
     # if cfg['distribute']['distributed']:

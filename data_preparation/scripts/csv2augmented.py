@@ -12,6 +12,7 @@ from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
 import librosa
 
+
 def download_TTS(root: str):
     from modelscope import snapshot_download
 
@@ -44,7 +45,13 @@ def synthesis(root: str, split: str, sample_time: int):
                 torchaudio.save(write_wav_path, output_wav, 16000)
 
 
-def choose_synthesis(root: str, split: str, sample_times: int, python_path: str, remove_intermediates: bool):
+def choose_synthesis(
+    root: str,
+    split: str,
+    sample_times: int,
+    python_path: str,
+    remove_intermediates: bool,
+):
     for id in range(sample_times):
         ttswav_root = f"{root}/temp_files/TTS/{split}/sample_{str(id)}"
         des = f"{root}/temp_files/TTS/{split}/sample_{str(id)}.txt"
@@ -57,7 +64,7 @@ def choose_synthesis(root: str, split: str, sample_times: int, python_path: str,
         os.remove(des)
 
         evaltext = f"{root}/temp_files/TTS/{split}/sample_{str(id)}_eval.txt"
-        ref_emb_path = f"{root}/data/available_embedding/{split}"
+        ref_emb_path = f"{root}/data/available_embedding/{split}/test-clean"
         src_emb_path = (
             f"{root}/pretrained/speech_campplus_sv_zh-cn_16k-common/embeddings"
         )
@@ -90,11 +97,11 @@ def choose_synthesis(root: str, split: str, sample_times: int, python_path: str,
             num = 0
             for line in r.readlines():
                 line = line.strip()
-                if line.split("\t")[1] != 'nan':
+                if line.split("\t")[1] != "nan":
                     grade = eval(line.split("\t")[1])
                 else:
                     grade = 0.0
-                
+
                 if i == 0:
                     max_sim.append(grade)
                     max_idx.append(i)
@@ -107,11 +114,13 @@ def choose_synthesis(root: str, split: str, sample_times: int, python_path: str,
     os.makedirs(f"{root}/temp_files/TTS/{split}/choose", exist_ok=True)
 
     with open(eval_txt, "w") as w:
-        with open(os.path.join(ttswav_root, f"sample_{str(i)}_eval.txt"), 'r') as r:
-            for i,line in enumerate(r.readlines()):
+        with open(os.path.join(ttswav_root, f"sample_{str(i)}_eval.txt"), "r") as r:
+            for i, line in enumerate(r.readlines()):
                 line = line.strip()
-                file = line.split('\t')[0].split('/')[-1].split('.npy')[0]
-                src_path = f"{root}/temp_files/TTS/{split}/sample_{str(max_idx[i])}/{file}.wav"
+                file = line.split("\t")[0].split("/")[-1].split(".npy")[0]
+                src_path = (
+                    f"{root}/temp_files/TTS/{split}/sample_{str(max_idx[i])}/{file}.wav"
+                )
                 tar_path = f"{root}/temp_files/TTS/{split}/choose/{file}.wav"
                 copyfile(src_path, tar_path)
                 w.write(
@@ -130,20 +139,28 @@ def choose_synthesis(root: str, split: str, sample_times: int, python_path: str,
         for i in range(sample_times):
             os.system(f"rm -r {root}/temp_files/TTS/{split}/sample_{str(i)}")
 
+
 def concat(root: str, split: str, remove_intermediates: bool):
     concat_tar_path = f"{root}/data/available_speech/{split}_TTS_concat"
     os.makedirs(concat_tar_path, exist_ok=True)
     src_path = f"{root}/data/available_speech/{split}"
     TTS_path = f"{root}/temp_files/TTS/{split}/choose"
     for spk in os.listdir(src_path):
-        os.makedirs(os.path.join(concat_tar_path,spk), exist_ok=True)
-        for file in os.listdir(os.path.join(src_path,spk)):
-            src_wav, _ = librosa.load(os.path.join(src_path,spk,file), sr=16000)
-            TTS_wav, _ = librosa.load(os.path.join(TTS_path,f"{file.split('.')[0]}_TTS.wav"), sr=16000)
-            sf.write(os.path.join(concat_tar_path,spk,file), np.concatenate([src_wav, TTS_wav],axis=0), 16000)
+        os.makedirs(os.path.join(concat_tar_path, spk), exist_ok=True)
+        for file in os.listdir(os.path.join(src_path, spk)):
+            src_wav, _ = librosa.load(os.path.join(src_path, spk, file), sr=16000)
+            TTS_wav, _ = librosa.load(
+                os.path.join(TTS_path, f"{file.split('.')[0]}_TTS.wav"), sr=16000
+            )
+            sf.write(
+                os.path.join(concat_tar_path, spk, file),
+                np.concatenate([src_wav, TTS_wav], axis=0),
+                16000,
+            )
     if remove_intermediates:
         os.system(f"rm -r {root}/temp_files")
-            
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=str)

@@ -30,6 +30,8 @@ optim:
 # Data config
 data:
   data_root: "/CDShare3/LibriMix/Libri2Mix/wav16k/min" # the path store the Libri2Mix
+  # spk_emb_dir: ["/Work21/2024/huangzikang/Github/Aug4TSE/data_preparation/data/available_embedding/0.5s_TTS_concat"]
+  # spk_emb_dir: ["/Work21/2024/huangzikang/Github/Aug4TSE/data_preparation/data/available_embedding/0.5s"]
   spk_emb_dir: ["/Work21/2024/huangzikang/Github/Aug4TSE/TSE/data/enroll_speech/embeddings/LibriSpeech_CAM"] # the path store the {train,valid} enrollment speeches' speaker embeddings
   audio_length: 4
   sample_rate: 16000

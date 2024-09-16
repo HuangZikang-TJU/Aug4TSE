@@ -1,11 +1,11 @@
 # Augmenting based on the given short enrollment speeches
-Prior to executing this phase, we assume that you have locaaly stored or can access the short enrollment speeches. If you don't have them, we also provide some examples at Aug4TSE/data_preparation/data/available_speech/0.5s , you can use these examples to conduct the following pipeline.
+Before executing this phase, we assume that you have the short enrollment speeches stored locally or accessible. If you don't have them, we also provide some examples at Aug4TSE/data_preparation/data/available_speech/0.5s. You can use these examples to conduct the following pipeline.
 
-If you just want to evaluate the TSE models using enrollment speeches, you can only see stage 1. If you see this introduction for the first time, we still recommend you read the all content.
+If you just want to evaluate the TSE models using enrollment speeches, you can only see stage 1. If you're reading this introduction for the first time, we still recommend you read all the content.
 
-We will use pretrained TTS system [LauraTTS](https://github.com/modelscope/FunCodec), pretrained speaker encoder CAM++ that is from [3D-Speaker ToolKit](https://github.com/modelscope/3D-Speaker) and ASR model Whisper-small that is from [OpenAI](https://github.com/openai/whisper) generate augmented enrollment speeches and corresponding speaker embeddings.
+We will use the pretrained TTS system [LauraTTS](https://github.com/modelscope/FunCodec), the pretrained speaker encoder CAM++ from the [3D-Speaker ToolKit](https://github.com/modelscope/3D-Speaker), and the ASR model Whisper-small from [OpenAI](https://github.com/openai/whisper) to generate augmented enrollment speeches and corresponding speaker embeddings.
 
-There are 4 stages in get_augmented.sh, if you first follow the pipeline, we recommend you run the stage one by one. You need to change the basic variables in get_augmented.sh
+There are 4 stages in get_augmented.sh. If you're following the pipeline for the first time, we recommend you run the stages one by one. You need to change the basic variables in get_augmented.sh.
 ```
 cd data_preparation
 bash get_augmented.sh
@@ -31,7 +31,7 @@ Aug4TSE/data_preration/data/available_embedding/0.5s/test-clean
 stage=2
 stop_stage=2
 ```
-In this stage, we will get a csv file including source_wav, source_text, _, target_text. It is a prerequisite for the following augmenting.
+In this stage, we will get a csv file including source_wav, source_text, _, target_text. It is a prerequisite for the following augmentation.
 - At the end of this stage, the directory structure of 'data' should look like this:
 ```
 Aug4TSE/data_preration/data/available_csv/0.5s.csv
@@ -44,7 +44,7 @@ Aug4TSE/data_preration/data/available_csv/0.5s.csv
 stage=3
 stop_stage=3
 ```
-In this stage, we will get the augmented enrollment speech, which is a concatenation speech of original short enrollment speech and synthesized speech based on the prerequisite csv file obtained in the stage 2. 
+In this stage, we will get the augmented enrollment speech, which is a concatenation of the original short enrollment speech and the synthesized speech based on the prerequisite csv file obtained in stage 2.
 - At the end of this stage, the directory structure of 'data' should look like this:
 ```
 Aug4TSE/data_preration/data/available_speech/0.5s_TTS_concat

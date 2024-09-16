@@ -6,19 +6,17 @@ from torchmetrics.functional import (
 )
 import torch
 
-print("torch version = ", torch.__version__)
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 import numpy as np
-from tqdm import tqdm
+import tqdm
 import soundfile as sf
 import sys
 import yaml
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
-print(SCRIPT_DIR)
 
 from models.bsrnn.bsrnn import BSRNN
 from models.dpccn.dpccn import DPCCN
@@ -145,7 +143,9 @@ if __name__ == "__main__":
         sum_ori_sisdr = 0
         sum_ori_sdr = 0
 
-        for k, (mixture_wav, target_wavs, spk_embeds) in enumerate(test_loader):
+        for k, (mixture_wav, target_wavs, spk_embeds) in tqdm.tqdm(
+            enumerate(test_loader)
+        ):
             mixture_wav = mixture_wav.squeeze(1)
             mixture_wav = mixture_wav.to(device)
             target_wavs = target_wavs.to(device)
@@ -170,12 +170,18 @@ if __name__ == "__main__":
             sum_sisdr += si_sdr
             sum_sdr += sdr
         print(
+            "extraced_sisdr:",
             sum_sisdr / len(test_loader),
+            "original_sisdr:",
             sum_ori_sisdr / len(test_loader),
+            "sisdr_improvement:",
             (sum_sisdr - sum_ori_sisdr) / len(test_loader),
         )
         print(
+            "extraced_sdr:",
             sum_sdr / len(test_loader),
+            "original_sdr:",
             sum_ori_sdr / len(test_loader),
+            "sdr_improvement:",
             (sum_sdr - sum_ori_sdr) / len(test_loader),
         )
